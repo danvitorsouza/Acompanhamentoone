@@ -49,6 +49,7 @@ export interface ImageFolder {
 
 export interface Document {
   id: string;
+  url: string; // URL do documento
   name: string;
   type: string;
   uploadDate: string;

@@ -1,7 +1,7 @@
 
-  # Tela de Módulos com Dropdown (Copy)
+  # Acompanhamento ONE sem uploads
 
-  This is a code bundle for Tela de Módulos com Dropdown (Copy). The original project is available at https://www.figma.com/design/zgNDLCMdlmQEN9mpMcLcd3/Tela-de-M%C3%B3dulos-com-Dropdown--Copy-.
+  This is a code bundle for Acompanhamento ONE sem uploads. The original project is available at https://www.figma.com/design/zgNDLCMdlmQEN9mpMcLcd3/Acompanhamento-ONE-sem-uploads.
 
   ## Running the code
 

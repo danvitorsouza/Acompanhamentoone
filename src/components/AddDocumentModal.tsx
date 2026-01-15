@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, FileText } from 'lucide-react';
-import { Document, MenuItem } from '../App';
+import { X, FileText, Link } from 'lucide-react';
+import { MenuItem } from '../App';
 
 interface AddDocumentModalProps {
   menus: MenuItem[];
   onConfirm: (
+    url: string,
     name: string, 
     type: string, 
     size: string,
@@ -19,6 +20,7 @@ interface AddDocumentModalProps {
 }
 
 export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModalProps) {
+  const [url, setUrl] = useState('');
   const [name, setName] = useState('');
   const [type, setType] = useState('PDF');
   const [size, setSize] = useState('');
@@ -74,36 +76,61 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim() && size.trim()) {
-      const menuIdToSave = selectedMenuId === 'general' ? undefined : selectedMenuId;
-      const submenuIdToSave = selectedSubmenuId === 'none' ? undefined : selectedSubmenuId;
-      const typeIdToSave = selectedTypeId === 'none' ? undefined : selectedTypeId;
-      
-      let menuNameToSave: string | undefined;
-      let submenuNameToSave: string | undefined;
-      let typeNameToSave: string | undefined;
-      
-      if (menuIdToSave) {
-        menuNameToSave = selectedMenu?.name;
-        
-        if (submenuIdToSave) {
-          const submenu = availableSubmenus.find(s => s.id === submenuIdToSave);
-          if (submenu) {
-            submenuNameToSave = submenu.name;
-          }
-        }
+    
+    if (!url.trim()) {
+      alert('Por favor, informe a URL do documento');
+      return;
+    }
+    
+    if (!name.trim()) {
+      alert('Por favor, informe o nome do documento');
+      return;
+    }
+    
+    if (!size.trim()) {
+      alert('Por favor, informe o tamanho do documento');
+      return;
+    }
 
-        if (typeIdToSave) {
-          const typeItem = availableTypes.find(t => t.id === typeIdToSave);
-          if (typeItem) {
-            typeNameToSave = typeItem.name;
-          }
+    const menuIdToSave = selectedMenuId === 'general' ? undefined : selectedMenuId;
+    const submenuIdToSave = selectedSubmenuId === 'none' ? undefined : selectedSubmenuId;
+    const typeIdToSave = selectedTypeId === 'none' ? undefined : selectedTypeId;
+    
+    let menuNameToSave: string | undefined;
+    let submenuNameToSave: string | undefined;
+    let typeNameToSave: string | undefined;
+    
+    if (menuIdToSave) {
+      menuNameToSave = selectedMenu?.name;
+      
+      if (submenuIdToSave) {
+        const submenu = availableSubmenus.find(s => s.id === submenuIdToSave);
+        if (submenu) {
+          submenuNameToSave = submenu.name;
         }
       }
-      
-      onConfirm(name.trim(), type, size.trim(), menuIdToSave, menuNameToSave, submenuIdToSave, submenuNameToSave, typeIdToSave, typeNameToSave);
-      onClose();
+
+      if (typeIdToSave) {
+        const typeItem = availableTypes.find(t => t.id === typeIdToSave);
+        if (typeItem) {
+          typeNameToSave = typeItem.name;
+        }
+      }
     }
+    
+    onConfirm(
+      url.trim(),
+      name.trim(), 
+      type, 
+      size.trim(), 
+      menuIdToSave, 
+      menuNameToSave, 
+      submenuIdToSave, 
+      submenuNameToSave, 
+      typeIdToSave, 
+      typeNameToSave
+    );
+    onClose();
   };
 
   useEffect(() => {
@@ -124,7 +151,8 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
           ? `${selectedMenu?.name} › ${selectedSubmenu.name} › T ${typeName}`
           : `${selectedMenu?.name} › T ${typeName}`,
         bgClass: 'bg-purple-50 border-purple-200',
-        textClass: 'text-purple-700'
+        textClass: 'text-purple-700',
+        icon: '💜'
       };
     } else if (selectedSubmenuId !== 'none') {
       const submenuName = availableSubmenus.find(s => s.id === selectedSubmenuId)?.name;
@@ -132,21 +160,24 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
         color: 'indigo',
         text: `${selectedMenu?.name} › ${submenuName}`,
         bgClass: 'bg-indigo-50 border-indigo-200',
-        textClass: 'text-indigo-700'
+        textClass: 'text-indigo-700',
+        icon: '📂'
       };
     } else if (selectedMenuId !== 'general') {
       return {
         color: 'blue',
         text: `${selectedMenu?.name}`,
         bgClass: 'bg-blue-50 border-blue-200',
-        textClass: 'text-blue-700'
+        textClass: 'text-blue-700',
+        icon: '📁'
       };
     }
     return {
       color: 'gray',
       text: 'Documentos Gerais',
       bgClass: 'bg-gray-50 border-gray-200',
-      textClass: 'text-gray-700'
+      textClass: 'text-gray-700',
+      icon: '📄'
     };
   };
 
@@ -171,6 +202,25 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
         </div>
         
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1">
+          {/* Campo URL */}
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-2">
+            <label className="block text-sm font-medium text-gray-700">
+              <Link className="w-4 h-4 inline mr-1" />
+              URL do Documento <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://exemplo.com/documento.pdf"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none text-sm"
+              autoFocus
+            />
+            <p className="text-xs text-gray-500">
+              Cole o link direto do documento (PDF, DOC, XLS, etc.)
+            </p>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">
               Nome do Documento <span className="text-red-500">*</span>
@@ -181,7 +231,6 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Contrato de Prestação de Serviços"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-sm"
-              autoFocus
             />
           </div>
 
@@ -284,8 +333,9 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
           {/* Preview da localização */}
           <div className={`${previewInfo.bgClass} border rounded-lg p-3`}>
             <p className="text-xs font-medium text-gray-600 mb-1">O documento ficará em:</p>
-            <p className={`text-sm font-semibold ${previewInfo.textClass}`}>
-              {previewInfo.text}
+            <p className={`text-sm font-semibold ${previewInfo.textClass} flex items-center gap-2`}>
+              <span>{previewInfo.icon}</span>
+              <span>{previewInfo.text}</span>
             </p>
           </div>
 
@@ -299,7 +349,7 @@ export function AddDocumentModal({ menus, onConfirm, onClose }: AddDocumentModal
             </button>
             <button
               type="submit"
-              disabled={!name.trim() || !size.trim()}
+              disabled={!url.trim() || !name.trim() || !size.trim()}
               className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-md"
             >
               Adicionar

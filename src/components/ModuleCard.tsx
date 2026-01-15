@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, RotateCw, StickyNote, Image as ImageIcon, Settings, HelpCircle, FileText } from 'lucide-react';
+import { Plus, RotateCw, StickyNote, Image as ImageIcon, FileText } from 'lucide-react';
 import { Module, MenuItem, Note, Document, Image } from '../App';
 import { MenuItemComponent } from './MenuItemComponent';
 import { AddMenuModal } from './AddMenuModal';
@@ -18,7 +18,7 @@ interface ModuleCardProps {
   onNumberClick: (moduleId: string, event: React.MouseEvent) => void;
 }
 
-type BackTab = 'notes' | 'images' | 'docs' | 'config' | 'help';
+type BackTab = 'notes' | 'images' | 'docs';
 
 export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: ModuleCardProps) {
   const [showAddMenu, setShowAddMenu] = useState(false);
@@ -159,9 +159,10 @@ export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: Mod
   };
 
   // Funções de documentos
-  const addDocument = (name: string, type: string, size: string, menuId?: string, menuName?: string, submenuId?: string, submenuName?: string, typeId?: string, typeName?: string) => {
+  const addDocument = (url: string, name: string, type: string, size: string, menuId?: string, menuName?: string, submenuId?: string, submenuName?: string, typeId?: string, typeName?: string) => {
     const newDocument: Document = {
       id: `doc-${Date.now()}`,
+      url,
       name,
       type,
       uploadDate: new Date().toLocaleDateString('pt-BR'),
@@ -368,9 +369,7 @@ export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: Mod
   const tabs = [
     { id: 'notes' as BackTab, icon: StickyNote, label: 'Notas' },
     { id: 'images' as BackTab, icon: ImageIcon, label: 'Imagens' },
-    { id: 'docs' as BackTab, icon: FileText, label: 'Docs' },
-    { id: 'config' as BackTab, icon: Settings, label: 'Config' },
-    { id: 'help' as BackTab, icon: HelpCircle, label: 'Ajuda' }
+    { id: 'docs' as BackTab, icon: FileText, label: 'Docs' }
   ];
 
   return (
@@ -478,7 +477,7 @@ export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: Mod
                       <button
                         key={tab.id}
                         onClick={() => setActiveBackTab(tab.id)}
-                        className={`flex items-center gap-1.5 px-2.5 py-2 text-xs font-medium transition-all relative ${
+                        className={`flex-1 flex items-center justify-center gap-1.5 px-2.5 py-2 text-xs font-medium transition-all relative ${
                           activeBackTab === tab.id
                             ? 'text-blue-600'
                             : 'text-gray-600 hover:text-gray-800'
@@ -491,7 +490,8 @@ export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: Mod
                         )}
                       </button>
                     );
-                  })}\n                </div>
+                  })}
+                </div>
 
                 {/* Conteúdo das Abas */}
                 <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
@@ -624,20 +624,6 @@ export function ModuleCard({ module, index, onUpdateModule, onNumberClick }: Mod
                           <p className="text-sm">Nenhum documento ainda</p>
                         </div>
                       )}
-                    </div>
-                  )}
-
-                  {activeBackTab === 'config' && (
-                    <div className="text-center py-8 text-gray-400">
-                      <Settings className="w-12 h-12 mx-auto mb-2 opacity-30" />
-                      <p className="text-sm">Em desenvolvimento</p>
-                    </div>
-                  )}
-
-                  {activeBackTab === 'help' && (
-                    <div className="text-center py-8 text-gray-400">
-                      <HelpCircle className="w-12 h-12 mx-auto mb-2 opacity-30" />
-                      <p className="text-sm">Em desenvolvimento</p>
                     </div>
                   )}
                 </div>
