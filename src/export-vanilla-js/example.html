@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE - Sistema de Gestão Logística</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Seu CSS customizado -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen p-8">
+    
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-blue-900 mb-6">
+            ONE - Sistema de Gestão Logística
+        </h1>
+
+        <!-- Exemplo de módulo -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-blue-700 mb-4">MÓDULO 1 - CADASTROS</h2>
+            
+            <!-- Menu Item Example -->
+            <div class="space-y-2">
+                <!-- Menu 1.0 - Acessos -->
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-blue-50 transition-all">
+                    <!-- Número com status (CLICÁVEL) -->
+                    <div id="number-item-1"></div>
+                    
+                    <!-- Nome do menu -->
+                    <span class="flex-1 text-xs font-semibold text-slate-700">
+                        Acessos
+                    </span>
+                    
+                    <!-- Emoji visual -->
+                    <div id="emoji-item-1"></div>
+                </div>
+
+                <!-- Submenu 1.0.1 - Usuário -->
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-indigo-50 transition-all ml-3">
+                    <div id="number-item-2"></div>
+                    <span class="text-indigo-500 text-xs font-bold">•</span>
+                    <span class="flex-1 text-xs text-slate-600">Usuário</span>
+                    <div id="emoji-item-2"></div>
+                </div>
+
+                <!-- Submenu 1.0.2 - Perfil -->
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-indigo-50 transition-all ml-3">
+                    <div id="number-item-3"></div>
+                    <span class="text-indigo-500 text-xs font-bold">•</span>
+                    <span class="flex-1 text-xs text-slate-600">Perfil</span>
+                    <div id="emoji-item-3"></div>
+                </div>
+
+                <!-- Submenu 1.0.3 - Permissão -->
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-indigo-50 transition-all ml-3">
+                    <div id="number-item-4"></div>
+                    <span class="text-indigo-500 text-xs font-bold">•</span>
+                    <span class="flex-1 text-xs text-slate-600">Permissão</span>
+                    <div id="emoji-item-4"></div>
+                </div>
+
+                <!-- Menu 1.1 - Pessoas -->
+                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md hover:bg-blue-50 transition-all mt-4">
+                    <div id="number-item-5"></div>
+                    <span class="flex-1 text-xs font-semibold text-slate-700">Pessoas (PF/PJ)</span>
+                    <div id="emoji-item-5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Importar o sistema de status -->
+    <script src="status-system.js"></script>
+    
+    <!-- Inicializar os botões -->
+    <script>
+        // Renderizar botões de status
+        document.getElementById('number-item-1').innerHTML = statusSystem.createStatusButton('1.0', 'item-1');
+        document.getElementById('number-item-2').innerHTML = statusSystem.createStatusButton('1.0.1', 'item-2');
+        document.getElementById('number-item-3').innerHTML = statusSystem.createStatusButton('1.0.2', 'item-3');
+        document.getElementById('number-item-4').innerHTML = statusSystem.createStatusButton('1.0.3', 'item-4');
+        document.getElementById('number-item-5').innerHTML = statusSystem.createStatusButton('1.1', 'item-5');
+        
+        // Renderizar emojis (inicialmente vazios)
+        document.getElementById('emoji-item-1').innerHTML = statusSystem.createStatusEmoji('item-1');
+        document.getElementById('emoji-item-2').innerHTML = statusSystem.createStatusEmoji('item-2');
+        document.getElementById('emoji-item-3').innerHTML = statusSystem.createStatusEmoji('item-3');
+        document.getElementById('emoji-item-4').innerHTML = statusSystem.createStatusEmoji('item-4');
+        document.getElementById('emoji-item-5').innerHTML = statusSystem.createStatusEmoji('item-5');
+    </script>
+</body>
+</html>
